@@ -67,34 +67,6 @@ def Binario_a_Decimal(binario):
 
 
 
-def Multiplicar():
-    n = str(ingresar_numero.get())
-    numero = int(n)
-    lista.delete(0, 10)  # Cada vez que se quiera utilizar la función, se limpia el Listbox
-    Tabla(numero)
-
-
-# Función de Prueba 2
-"""
-    IMPORTANTE: El propósito de esta función está en ver que se pueden implementar funciones
-    recursivas en Tkinter, en este caso, es una función que permite mostrar las tabla de
-    multiplicar del número que se ingrese a la función, estas son mostradas en un Listbox,
-    el cual es uan herramienta de Tkinter para mostrar diferentes textos en diferente líneas
-
-    En este caso lista, es el nombre del Listbox
-
-    Función
-
-    lista.insert(línea dentro del Listbox, texto a mostrar)
-
-    Se ejecuta con el botón con la imagen de robots
-
-"""
-
-
-    # Nota: La función Tabla no es de mi autoria pertenece al estudiante Elías Avendaño
-
-
 """
 
      CONFIGURACIÓN DE LA VENTANA PRINCIPAL
@@ -132,10 +104,8 @@ lista = Listbox(ventana_principal, bg="yellow", width = 50, height= 5)
 lista.place(x=10, y=120)
 
 
-# Entry para ingresar la edad
 #ingresar_edad = Entry(ventana_principal, width=10, font=("Agency", 14), bg="white", fg="blue")
 #ingresar_edad.place(x=10, y=50)
-
 
 
 
@@ -153,11 +123,9 @@ boton_validacion = Button(ventana_principal, bg='black', text="Calcular", comman
 boton_validacion.place(x=400, y=40)
 
 
-
 # Botón simple
 boton_ingresar1 = Button(ventana_principal, text="SALIR", command=Salir, bg="DarkRed", fg="black", font=("Verdana", 12))
 boton_ingresar1.place(x=410, y=380)
-
 
 
 # Fin del código de la ventana principal
