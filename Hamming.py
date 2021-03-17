@@ -1,67 +1,164 @@
-import pygame
-import sys
-from pygame.locals import (QUIT, KEYDOWN, K_ESCAPE, MOUSEBUTTONDOWN)
+""" LIBRREÍAS """
+from tkinter import *  # Tk(), Label, Canvas, Photo
+import os  # Archivos en la computadora
+import numpy
 
-pygame.init()
+# Función para cargar imágenes
 
-# basic setup
-screen = pygame.display.set_mode((1200, 600))
-clock = pygame.time.Clock()
-
-# main menu
-
-
-def main_menu():
-    running = True
-    arialFont = pygame.font.SysFont('arial', 25)
-    printButton = pygame.Rect(550, 100, 170, 100)  # draw red button
-    eraseButton = pygame.Rect(550, 400, 170, 100)  # draw blue button
-    printHelloWorld = False
-
-    while running:
-
-        # Flags
-        click = False
-
-        # Events
-        for event in pygame.event.get():  # check events here
-            # leave application
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-                running = False
-                pygame.quit()
-                sys.exit()
-            elif event.type == MOUSEBUTTONDOWN and event.button == 1:  # check for left mouse click
-                click = True
-
-        mx, my = pygame.mouse.get_pos()
-
-        if printButton.collidepoint((mx, my)) and click:
-            printHelloWorld = True
-        elif eraseButton.collidepoint((mx, my)) and click:
-            printHelloWorld = False
-
-        # Drawing and updating
-        screen.fill((255, 255, 255))  # white background
-        pygame.draw.rect(screen, (255, 50, 50), printButton)  # red button
-        draw_text("Print", arialFont, (0, 0, 0), screen, 600, 110)
-        pygame.draw.rect(screen, (50, 50, 255), eraseButton)  # blue button
-        draw_text("Erase", arialFont, (0, 0, 0), screen, 600, 410)
-
-        if printHelloWorld:
-            draw_text("Hello World!", arialFont, (0, 0, 0), screen, 580, 310)
-
-        pygame.display.flip()
-        clock.tick(14)
-
-# basic function to draw text
+def CargarImg(nombre):
+    ruta = os.path.join("imagenes", nombre)
+    imagen = PhotoImage(file=ruta)
+    return imagen
 
 
-def draw_text(text, font, color, surface, x, y):
-
-    if text == "":
-        return
-    text = font.render(text, 1, color)
-    surface.blit(text, (x, y))
+# Función para cerrar la ventana principal
+def Salir():
+    ventana_principal.destroy()
 
 
-main_menu()
+def Validaciones():
+
+    dato_recibido = str(ingresar_dato.get())
+
+    if verficar_dato(dato_recibido) == True:
+        if len(dato_recibido) == 12:
+            Conversiones(dato_recibido)
+        else:
+            l_informacion.config(text = "Error en el largo")
+    else:
+        l_informacion.config(text="Error en el dato")
+
+def verficar_dato(dato):
+    for bit in dato:
+        if bit == "1" or bit == "0":
+            dato  = dato[1:]
+        else:
+            return False
+    return True
+
+
+def Conversiones(dato):
+
+    lista.delete('0', 'end')
+
+    para_convertir = Binario_a_Decimal(int(dato))
+
+    octal = numpy.base_repr(para_convertir, 8)
+    decimal = numpy.base_repr(para_convertir, 10)
+    hexadecimal = numpy.base_repr(para_convertir, 16)
+
+    dato_octal = "El dato  " + dato + " en la base octal es:  " + str(octal)
+    dato_decimal = "El dato  " + dato + " en la base decimal es:  " + str(decimal)
+    dato_hexadecimal = "El dato  " + dato + " en la base hexadeciaml es:  " + str(hexadecimal)
+
+    lista.insert(0, dato_octal)
+    lista.insert(1, dato_decimal)
+    lista.insert(2, dato_hexadecimal)
+
+
+def Binario_a_Decimal(binario):
+    decimal, i, n = 0, 0, 0
+    while (binario != 0):
+        dec = binario % 10
+        decimal = decimal + dec * pow(2, i)
+        binario = binario // 10
+        i += 1
+    return decimal
+
+
+
+def Multiplicar():
+    n = str(ingresar_numero.get())
+    numero = int(n)
+    lista.delete(0, 10)  # Cada vez que se quiera utilizar la función, se limpia el Listbox
+    Tabla(numero)
+
+
+# Función de Prueba 2
+"""
+    IMPORTANTE: El propósito de esta función está en ver que se pueden implementar funciones
+    recursivas en Tkinter, en este caso, es una función que permite mostrar las tabla de
+    multiplicar del número que se ingrese a la función, estas son mostradas en un Listbox,
+    el cual es uan herramienta de Tkinter para mostrar diferentes textos en diferente líneas
+
+    En este caso lista, es el nombre del Listbox
+
+    Función
+
+    lista.insert(línea dentro del Listbox, texto a mostrar)
+
+    Se ejecuta con el botón con la imagen de robots
+
+"""
+
+
+    # Nota: La función Tabla no es de mi autoria pertenece al estudiante Elías Avendaño
+
+
+"""
+
+     CONFIGURACIÓN DE LA VENTANA PRINCIPAL
+
+"""
+ventana_principal = Tk()
+ventana_principal.title("DISEÑO LÓGICO")
+ventana_principal.minsize(500, 450)
+ventana_principal.resizable(width=NO, height=NO)
+
+fondo = Canvas(ventana_principal, width=600, height=600, bg='DodgerBlue4')
+fondo.place(x=0, y=0)
+
+
+""" Elementos de la interfaz """
+
+# Label con el título principal
+l_titulo = Label(ventana_principal, text="PROYECTO DISEÑO LÓGICO ", font=("Verdana", 14), bg="DodgerBlue4", fg="maroon1")
+l_titulo.place(x=130, y=10)
+
+# Label de información
+titulo = Label(ventana_principal, text="Ingrese un dato binario de 12 bits", font=("Agency FB", 14), bg="DodgerBlue4", fg="black")
+titulo.place(x=10, y=50)
+
+# Entry para ingresar el dato binario
+ingresar_dato= Entry(ventana_principal, width=15, font=("Agency", 14), bg="black", fg="yellow")
+ingresar_dato.place(x=220, y=50)
+
+# Label para información
+l_informacion = Label(ventana_principal, text="", font=("Agency FB", 16), bg="DodgerBlue4", fg="black")
+l_informacion.place(x=10, y=80)
+
+# ListBox para desplegar la información
+lista = Listbox(ventana_principal, bg="yellow", width = 50, height= 5)
+lista.place(x=10, y=120)
+
+
+# Entry para ingresar la edad
+#ingresar_edad = Entry(ventana_principal, width=10, font=("Agency", 14), bg="white", fg="blue")
+#ingresar_edad.place(x=10, y=50)
+
+
+
+
+# Label con el texto ingresar edad
+#l_numero = Label(ventana_principal, text="Ingrese un número: ", font=("Agency FB", 14), bg="black", fg="magenta")
+#l_numero.place(x=10, y=150)
+
+
+
+
+# Botón con imagen
+#flecha = CargarImg("right-arrow.gif")
+boton_validacion = Button(ventana_principal, bg='black', text="Calcular", command=Validaciones, fg="lime", font=("Agency FB", 14))
+#boton_ima1.config(image=flecha)
+boton_validacion.place(x=400, y=40)
+
+
+
+# Botón simple
+boton_ingresar1 = Button(ventana_principal, text="SALIR", command=Salir, bg="DarkRed", fg="black", font=("Verdana", 12))
+boton_ingresar1.place(x=410, y=380)
+
+
+
+# Fin del código de la ventana principal
+ventana_principal.mainloop()
