@@ -34,15 +34,28 @@ def Validar():
         l_informacion.config(text="Error en el dato")
 
 
+def generar_senal_NRZI(dato):
+    senal = [-1]
+    for bit in dato:
+        ultimo_bit = senal[-1]
+        senal.append(-ultimo_bit if int(bit) else ultimo_bit)
+    return senal
+
+
 def generar_NRZI(dato):
-    figure = plt.Figure(figsize=(6, 3), dpi=lista.winfo_width()/6)
+    figure = plt.Figure(figsize=(6, 2.5), dpi=lista.winfo_width()/6)
     ax = figure.add_subplot()
     chart_type = FigureCanvasTkAgg(figure, ventana_principal)
-    chart_type.get_tk_widget().place(x=lista.winfo_x(), y=lista.winfo_y()+lista.winfo_height()+5)
+    chart_type.get_tk_widget().place(x=lista.winfo_x(), y=lista.winfo_y()+lista.winfo_height()+10)
     ax.set_title('NRZI')
+    ax.set_ylim([-1.2, 2])
+    ax.set_xlim([0, 12])
     ax.set_yticks([-1, 0, 1])
-    ax.step(list([0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0]), [-1, 1, -1, 1, 1, 1, 1, 1, 0, -1, -1, 0])
-    ax.set_xticks()
+    ax.step(list(range(13)), generar_senal_NRZI(dato))
+    for i in range(12):
+        ax.text(0.5+i, 1.3, dato[i], fontsize=16, verticalalignment="bottom", horizontalalignment="center")
+        ax.plot([i+1, i+1], [-1.2, 2], color="lightgrey", linestyle="--")
+    ax.set_xticks([])
     return
 
 
@@ -113,7 +126,7 @@ def limitar_entrada(entrada_binaria):
     string_binario = entrada_binaria.get()
     if len(string_binario) > 12:
         entrada_binaria.set(string_binario[:12])
-    if string_binario[-1:] not in "01":
+    if string_binario[-1] not in "01":
         entrada_binaria.set(string_binario[:-1])
 
 
