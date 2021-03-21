@@ -205,10 +205,10 @@ def detectError(arr, nr):
 """
 ventana_principal = tk.Tk()
 ventana_principal.title("DISEÑO LÓGICO")
-ventana_principal.minsize(1300, 800)
+ventana_principal.minsize(1300, 500)
 ventana_principal.resizable(width=tk.NO, height=tk.NO)
 
-fondo = tk.Canvas(ventana_principal, width=1300, height=1000, bg='DodgerBlue4')
+fondo = tk.Canvas(ventana_principal, width=1300, height=500, bg='DodgerBlue4')
 fondo.place(x=0, y=0)
 
 
